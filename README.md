@@ -11,12 +11,14 @@
       - [实体关系图(ER图)](#实体关系图er图)
       - [设计范式理论](#设计范式理论)
     - [查询接口](#查询接口)
+      - [Text2SQL](#Text2SQL)
     - [向量检索\&增强LLM](#向量检索增强llm)
     - [数据库维护](#数据库维护)
   - [相关学术论文](#相关学术论文)
     - [数据库设计](#数据库设计-1)
       - [DB-GPT:Large Language Model Meets Database](#db-gptlarge-language-model-meets-database)
     - [查询接口](#查询接口-1)
+      - [LLM4Text2SQL](#LLM4Text2SQL)
     - [向量检索\&增强LLM](#向量检索增强llm-1)
     - [数据库维护](#数据库维护-1)
   - [实验设计](#实验设计)
@@ -70,6 +72,23 @@
 
 ### [查询接口](#查询接口_章节)
 
+#### [Text2SQL](#Text2SQL_章节)
+随着数据库的发展，越来越多的用户在不同的领域会接触或使用数据库。为了能够让一些非专业人士使用数据库进行查询操作，越来越多的研究者开始关注如何将用户输入的自然语言文本转换为数据库可执行的SQL查询语句，即Text2SQL任务。
+
+从技术范畴来看，Text2SQL任务的本质是将用户输入的自然语言文本转化为计算机可读懂、可运行、符合计算机规则的语义表示。这需要计算机能够理解自然语言，并生成能够准确表达语义的可执行的程序式语言。Text2SQL任务的定位属于语义分析领域的一个子任务。
+
+Text2SQL的输入一般为数据库的schema（通常包含数据库中的所有表名和表中的所有列名）和自然语言描述的查询文本，而最终希望得到的结果是可执行的与自然语言描述对应的SQL查询，如下图所示。
+![Text2SQL示例](./img/Text2SQL/Text2SQL示例.png)
+
+该任务主要有三个难点。
+- 如何对数据库schema中的各个关系进行编码，让模型能够学习到数据库各个表之间的关系。
+- 如何对数据库schema与自然语言描述进行对齐，让模型能够学习到自然语言描述中的单词是对应数据库schema中哪个表或哪个列。
+- 如何生成正确的可执行的SQL查询语句。
+
+传统的Text2SQL模型通常会针对上述的三个难点，专门设计各种不同的模块。而在基于大语言模型的场景下，上述的难点可以借助大语言模型强大的语言理解能力和文本生成能力来进行解决。大语言模型可以有效理解用户输入的数据库schema并且严格生成符合SQL语法格式的结果。因此，大语言模型在Text2SQL任务上取得了优异的表现。现在，越来越多的研究者开始探索如何充分挖掘大语言模型的能力，更好的完成Text2SQL任务，其中具体应用和方法的分类如下图所示。
+![LLM4Text2SQL](./img/Text2SQL/LLM4Text2SQL.png)
+
+
 ...
 
 ### [向量检索&增强LLM](#向量检索&增强LLM_章节)
@@ -88,6 +107,13 @@
 
 
 ### [查询接口](#查询接口_论文)
+#### [LLM4Text2SQL](#Text2SQL论文)
+- [A comprehensive evaluation of ChatGPT's zero-shot Text-to-SQL capability](https://arxiv.org/pdf/2303.13547.pdf)
+- [Exploring Chain-of-Thought Style Prompting for Text-to-SQL](https://arxiv.org/pdf/2305.14215.pdf)
+- [LLM-SQL-Solver: Can LLMs Determine SQL Equivalence?](https://arxiv.org/pdf/2312.10321.pdf)
+- [Using LLM to select the right SQL Query from candidates](https://arxiv.org/pdf/2401.02115.pdf)
+- [DBCopilot: Scaling Natural Language Querying to Massive Databases](https://arxiv.org/pdf/2312.03463.pdf)
+- [Can llm already serve as a database interface? a big bench for large-scale database grounded text-to-sqls](https://arxiv.org/pdf/2305.03111.pdf)
 
 ...
 
