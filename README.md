@@ -153,10 +153,19 @@ $$ Recall=\frac{|N\cap M|}K $$
 
 
 
-### [向量检索&增强LLM](#向量检索&增强LLM_论文)
+### [向量检索&检索增强LLM](#向量检索&增强LLM_论文)
 #### [向量检索](#向量检索论文)
 - [Survey of Vector Database Management Systems](https://arxiv.org/pdf/2310.14021.pdf)
-
+- [A survey on locality sensitive hashing algorithms and their applications](https://arxiv.org/pdf/2102.08942.pdf)
+- [K-d trees for semidynamic point sets](https://dl.acm.org/doi/pdf/10.1145/98524.98564)
+- [Approximate nearest neighbor algorithm based on navigable small world graphs](https://www.sciencedirect.com/science/article/abs/pii/S0306437913001300)
+- [Optimized product quantization](https://ieeexplore.ieee.org/abstract/document/6678503)
+- [Learning Balanced Tree Indexes for Large-Scale Vector Retrieval](https://dl.acm.org/doi/abs/10.1145/3580305.3599406)
+#### [检索增强LLM](#检索增强LLM)
+- [Retrieval-augmented generation for large language models](https://arxiv.org/pdf/2312.10997.pdf)
+- [Retrieve anything to augment large language models](https://arxiv.org/pdf/2310.07554.pdf)
+- [Augmenting Language Models with Long-Term Memory](https://proceedings.neurips.cc/paper_files/paper/2023/file/ebd82705f44793b6f9ade5a669d0f0bf-Paper-Conference.pdf)
+- [GPTCache: An Open-Source Semantic Cache for LLM Applications Enabling Faster Answers and Cost Savings](https://aclanthology.org/2023.nlposs-1.24.pdf)
 ### [数据库维护](#数据库维护_论文)
 
 ...
