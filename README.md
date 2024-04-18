@@ -12,6 +12,7 @@
       - [设计范式理论](#设计范式理论)
     - [查询接口](#查询接口)
       - [Text2SQL](#Text2SQL)
+      - [数据分析](#数据分析)
     - [向量检索\&增强LLM](#向量检索增强llm)
     - [数据库维护](#数据库维护)
   - [相关学术论文](#相关学术论文)
@@ -91,8 +92,25 @@ Text2SQL的输入一般为数据库的schema（通常包含数据库中的所有
 
 ![LLM4Text2SQL](./img/Text2SQL/LLM4Text2SQL.png)
 
+#### [数据分析](#数据分析_章节)
 
-...
+
+依托于大语言模型的高级对话能力和 Text2SQL 能力，用户可以通过自然语言形式的对话进行数据查询。在数据分析领域，数据分析师需要频繁地对数据库进行交互，而大语言模型的出现降低了用户数据库进行交互的门槛，越来越多基于大语言模型的高级应用被开发，可能颠覆传统数据分析的工作流程。
+
+数据分析的过程由浅到深可以分为描述性、诊断性、预测性以及指导性分析。
+<!-- 数据分析的过程由浅到深可以分为描述性、诊断性、预测性以及指导性分析。诊断性分析是数据分析的初级阶段，旨在客观地对数据进行总结和描述，以便更好地理解数据。诊断性分析的目的是确定数据问题，例如异常值和异常情况的发现。预测性分析是根据过去的数据预测未来的趋势和结果，而指导性分析是根据数据分析的结果为决策者提出建议和决策以实现商业业务目标。 -->
+在大语言模型出现之前，大部分的人工智能方法只能触及描述性分析阶段，例如利用 Text2SQL 能力对数据库进行简单的基础查询。随着大语言模型的指令能力增强，多种数据分析中复杂任务实现已经可以成为可能，我们对这些任务进行了分类如图所示。
+![数据分析框架](img/数据分析/数分框架.png)
+
+大模型辅助数据分析的主要手段包括
+
+- 数据洞察 ：通过对数据集相关字段和定义进行初步分析，生成数据摘要，为用户在分析工作开始前提供更多有价值的信息
+- Text2SQL ：对用户意图生成相应的 SQL 执行规划，推动数据分析过程，是实现数据分析任务的主要手段
+- 数据可视化 ：对数据或查询结果绘制图表、提供更直观的可视化分析
+- 代码生成 ：针对高级数据操作，例如回归预测分析等，生成相应的数据操作代码
+- 外部工具调用：通过工具调用实现运行 Python 解释器、查询外部接口等更多复杂功能推动数据分析进程
+- 结果分析 ：通过结果分析实现下一步分析动作，实现全自动化的数据分析智能体
+- 报告生成 ：对整个数分流程结果进行汇总并总结，生成分析报告
 
 ### [向量检索&增强LLM](#向量检索&增强LLM_章节)
 #### [向量检索](#向量检索)
@@ -151,6 +169,14 @@ $$ Recall=\frac{|N\cap M|}K $$
 - [DBCopilot: Scaling Natural Language Querying to Massive Databases](https://arxiv.org/pdf/2312.03463.pdf)
 - [Can llm already serve as a database interface? a big bench for large-scale database grounded text-to-sqls](https://arxiv.org/pdf/2305.03111.pdf)
 
+#### [数据分析](#数据分析_论文)
+- [InsightPilot: An LLM-Empowered Automated Data Exploration System](https://aclanthology.org/2023.emnlp-demo.31.pdf)
+- [JarviX: A LLM No code Platform for Tabular Data Analysis and Optimization](https://aclanthology.org/2023.emnlp-industry.59.pdf)
+- [DB-GPT: Empowering Database Interactions with Private Large Language Models](https://arxiv.org/pdf/2312.17449.pdf)
+- [ChatDB: Augmenting LLMs with Databases as Their Symbolic Memory
+](https://arxiv.org/pdf/2306.03901.pdf)
+- [Text2Analysis: A Benchmark of Table Question Answering with Advanced Data Analysis and Unclear Queries](https://ojs.aaai.org/index.php/AAAI/article/view/29779/31344)
+- [OpenAgents: An Open Platform for Language Agents in the Wild](https://arxiv.org/pdf/2310.10634.pdf)
 
 
 ### [向量检索&检索增强LLM](#向量检索&增强LLM_论文)
@@ -269,6 +295,30 @@ C -- SC
 ![实验示例2](./img/Text2SQL/实验示例2.png)
 
 最后，我们还可以尝试自己编写Prompt，进一步探索如何更好的激发大语言模型的Text2SQL能力。
+
+### [大模型数据分析实践](#大模型数据分析实践)
+
+介绍如何结合 MySQL 数据库、 ChatGPT 以及开源数据分析系统 [DB-GPT](https://github.com/eosphoros-ai/DB-GPT) 低成本利用大语言模型帮助实现数据分析工作。
+
+下载 DB-GPT 的源码之后，复制工程目录下的 .env.template 模版文件并命名为 .env 文件，并修改该文件的环境变量，填入所使用的大模型类型， API 密钥信息以及MySQL 数据库连接信息。之后导入项目自带的示例数据库数据。
+
+启动系统后，添加要访问的数据库连接，在侧边栏选择数据库并在候选卡片中选择 MySQL，输入连接名称、用户名、密码等完成设置。
+![实验示例1](img/数据分析/system1.png)
+
+数据库连接创建好后我们就可以进行数据分析工作。首先可以对最基本的 Text2SQL 能力进行测试。输入“查询所有学生的姓名，专业和成绩，按成绩降序排序”，大语言模型给出了对问题的思考过程以及 SQL，系统运行 SQL 给出执行结果。
+
+![实验示例2](img/数据分析/system2.png)
+![实验示例3](img/数据分析/system3.png)
+
+进一步地，DB-GPT 还可以对查询结果进行图表生成，只需要在提问时告知模型需要进行可视化。下图展示了一个对电商场景数据库中对各商品销量进行查询并从多角度构建商务报表的例子。
+
+
+![实验示例4](img/数据分析/system4.png)
+
+最后可以从后端启动的命令行中查看 DB-GPT 如何从用户输入中构建合理的指令指令提示，以及大语言模型的原始返回结果。这些步骤有助于帮助了解系统背后的运行过程。
+
+![实验示例5](img/数据分析/system5.png)
+![实验示例6](img/数据分析/system6.png)
 
 ## [联系我们](#联系我们)
 - 蔡琰 Email：51255901104@stu.ecnu.edu.cn
